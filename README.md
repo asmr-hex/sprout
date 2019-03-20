@@ -32,6 +32,11 @@ promote privacy by taking the opportunity to sell personal data away from cloud 
 * service discovery (when a new device is attached to the network)
 * types (type defs for servers, services, devices, etc.)
 * security hardening?
+* gateway port forwarding
 
 ### forseeable challenges
 * handle configuring routers (make http requests simulating a browser...)
+
+### Resources
+* [Go Change Gateway with UPnP](https://github.com/NebulousLabs/go-upnp)
+* [Go UPnP](https://github.com/huin/goupnp)
