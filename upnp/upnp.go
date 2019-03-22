@@ -49,10 +49,29 @@ const (
 	IGDv2 = `urn:schemas-upnp-org:device:InternetGatewayDevice:2`
 )
 
-// Do i need this?
-type Device struct {
-	goupnp.Device
-	Location *url.URL
+type Router struct {
+	Name                 string
+	Manufacturer         string
+	UDN                  string // unique device name
+	Type                 string // device type (InternetGatewayDevice:1?2)
+	ModelNumber          string
+	SerialNumber         string
+	Description          string
+	PortMappingPermitted bool // is the router able to map ports?
+
+	root *goupnp.RootDevice
+}
+
+func (r *Router) GetExternalIPAddress() (string, error) {
+	return "", nil
+}
+
+func (r *Router) AddPortMapping() error {
+	return nil
+}
+
+func (r *Router) RemovePortMapping() error {
+	return nil
 }
 
 // An existing device on the network which is encountered an error while
