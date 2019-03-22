@@ -51,31 +51,55 @@ const (
 
 // Do i need this?
 type Device struct {
-	goupnp.RootDevice
+	goupnp.Device
+	Location *url.URL
+}
+
+// An existing device on the network which is encountered an error while
+// probing.
+type UnreachableDevice struct {
 	Location *url.URL
 	Err      error
 }
 
 // performs a multicast discovery of all Internet Gateway Devices (v1 or v2) and
-// returns a slice of these root devices.
+// returns a Unique Device Name (string) -> Device map, a slice of unreachable
+// devices, and an error.
 //
-func DiscoverRouters() ([]goupnp.MaybeRootDevice, error) {
+func DiscoverRouters() (map[string]*goupnp.RootDevice, []UnreachableDevice, error) {
 	var (
-		targets = []string{IGDv1, IGDv2}
-		routers = []goupnp.MaybeRootDevice{}
+		targets     = []string{IGDv1, IGDv2}
+		routers     = map[string]*goupnp.RootDevice{}
+		unreachable = []UnreachableDevice{}
 	)
 
 	// discover all internet gateway devices
 	for _, target := range targets {
-		d, err := goupnp.DiscoverDevices(target)
+		devices, err := goupnp.DiscoverDevices(target)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 
-		routers = append(routers, d...)
+		// include each device into the map of routers
+		for _, device := range devices {
+			// if the device exists, but encountered an error, it is unreachable
+			if device.Err != nil {
+				unreachable = append(
+					unreachable,
+					UnreachableDevice{
+						Location: device.Location,
+						Err:      device.Err,
+					},
+				)
+
+				continue
+			}
+
+			routers[device.Root.Device.UDN] = device.Root
+		}
 	}
 
-	return routers, nil
+	return routers, unreachable, nil
 }
 
 func (d *Device) GetUPnPServices() ([]*internetgateway1.WANIPConnection1, error) {

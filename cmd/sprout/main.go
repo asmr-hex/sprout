@@ -7,26 +7,22 @@ import (
 )
 
 func main() {
-	routers, err := upnp.DiscoverRouters()
+	routers, _, err := upnp.DiscoverRouters()
 	if err != nil {
 		panic(err)
 	}
 
 	for _, router := range routers {
-		if router.Err != nil {
-			fmt.Println("Error probing device at location: " + router.Location.String())
-			continue
-		}
 		fmt.Println("")
-		fmt.Println("Name: " + router.Root.Device.FriendlyName)
-		fmt.Println("UDN: " + router.Root.Device.UDN)
-		fmt.Println("Device Type: " + router.Root.Device.DeviceType)
-		fmt.Println("Manufacturer: " + router.Root.Device.Manufacturer)
-		fmt.Println("Model Name: " + router.Root.Device.ModelName)
-		fmt.Println("Model Number: " + router.Root.Device.ModelNumber)
-		fmt.Println("Serial Number: " + router.Root.Device.SerialNumber)
-		fmt.Println("Model Description: " + router.Root.Device.ModelDescription)
-		fmt.Println("Location: " + router.Location.String())
+		fmt.Println("Name: " + router.Device.FriendlyName)
+		fmt.Println("UDN: " + router.Device.UDN)
+		fmt.Println("Device Type: " + router.Device.DeviceType)
+		fmt.Println("Manufacturer: " + router.Device.Manufacturer)
+		fmt.Println("Model Name: " + router.Device.ModelName)
+		fmt.Println("Model Number: " + router.Device.ModelNumber)
+		fmt.Println("Serial Number: " + router.Device.SerialNumber)
+		fmt.Println("Model Description: " + router.Device.ModelDescription)
+		fmt.Println("Location: " + router.URLBaseStr)
 
 		// services, err := router.GetUPnPServices()
 		// if err != nil {
@@ -37,4 +33,5 @@ func main() {
 		// b, _ := json.MarshalIndent(services, "", "    ")
 		// fmt.Println(string(b))
 	}
+
 }
