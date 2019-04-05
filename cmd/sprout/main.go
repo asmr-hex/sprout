@@ -14,15 +14,14 @@ func main() {
 
 	for _, router := range routers {
 		fmt.Println("")
-		fmt.Println("Name: " + router.Device.FriendlyName)
-		fmt.Println("UDN: " + router.Device.UDN)
-		fmt.Println("Device Type: " + router.Device.DeviceType)
-		fmt.Println("Manufacturer: " + router.Device.Manufacturer)
-		fmt.Println("Model Name: " + router.Device.ModelName)
-		fmt.Println("Model Number: " + router.Device.ModelNumber)
-		fmt.Println("Serial Number: " + router.Device.SerialNumber)
-		fmt.Println("Model Description: " + router.Device.ModelDescription)
-		fmt.Println("Location: " + router.URLBaseStr)
+		fmt.Println("Name: " + router.Name)
+		fmt.Println("UDN: " + router.UDN)
+		fmt.Println("Device Type: " + router.Type)
+		fmt.Println("Manufacturer: " + router.Manufacturer)
+		fmt.Println("Model Number: " + router.ModelNumber)
+		fmt.Println("Serial Number: " + router.SerialNumber)
+		fmt.Println("Model Description: " + router.Description)
+		fmt.Println(router.PortMappingPermitted)
 
 		// services, err := router.GetUPnPServices()
 		// if err != nil {
