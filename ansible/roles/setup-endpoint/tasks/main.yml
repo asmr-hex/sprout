@@ -1,0 +1,23 @@
+---
+- name: Setup Endpoints | install nginx configs
+  become: true
+  template:
+    src: templates/nginx-virtual-server.conf.j2
+    dest: /etc/nginx/sites-available/{{ item.domain_name }}
+  with_items:
+    - "{{ endpoints }}"
+
+- name: Setup Endpoints | symlink available sites to enabled sites
+  become: true
+  file:
+    src: /etc/nginx/sites-available/{{ item.domain_name }}
+    dest: /etc/nginx/sites-enabled/{{ item.domain_name }}
+    state: link
+  with_items:
+    - "{{ endpoints }}"
+  notify: restart nginx
+
+# - name: Setup Endpoints | obtain certs for all enabled sites
+#   # TODO cli flag to force https if http given (redirect)
+#   shell: certbot --nginx -d {{ item.domain_name }} -d www.{{ item.domain_name }} --non-interactive --agree-tos
+...

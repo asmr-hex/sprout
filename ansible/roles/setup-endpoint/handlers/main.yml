@@ -1,0 +1,19 @@
+---
+- name: restart nginx
+  debug: msg="test config && restart"
+  changed_when: True
+  notify:
+    - test config
+    - restart nginx with valid config
+
+- name: test config
+  command: "nginx -t"
+  register: result
+  changed_when: "result.rc != 0"
+  check_mode: no
+
+- name: restart nginx with valid config
+  service:
+    name: nginx
+    state: restarted
+...

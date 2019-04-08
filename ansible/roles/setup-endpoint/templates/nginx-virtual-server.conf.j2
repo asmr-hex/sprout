@@ -1,0 +1,49 @@
+## Nginx Virtual Server Configuration ##
+
+
+# Nginx uses hash tables to quickly map requests to server names
+# server_names_hash_bucket_size 128;
+
+server {
+       # by default, listen for incoming traffic on port 80
+       listen 80;
+
+       # this server block applies to traffic whose 'Host' header
+       # matches the server_names below
+       server_name {{ item.domain_name }};
+
+       {% if is_gateway %}
+          # configure access and error log locations
+          access_log    /var/log/nginx/{{ item.domain_name }}.access.log combined;
+          error_log     /var/log/nginx/{{ item.domain_name }}.error.log;
+       {% else %}
+          # access and error logs for this virtual server are located
+          # on your constellation's gateway host, {{ gateway_host }}, in
+          #    /var/log/nginx/{{ item.domain_name }}.access.log
+          #    /var/log/nginx/{{ item.domain_name }}.error.log
+       {% endif %}
+
+       {% if item.static  %}
+          # this is a static endpoint
+          root    {{ item.static_root }};
+          index   index.html index.htm;
+       {% else %}
+          # this is a proxy endpoint to another endpoint
+          location / {
+                   # proxy this request to the endpoint below
+                   proxy_pass http://{{ item.host }}:{{ item.port }};
+
+                   # allow timeouts and errors to bubble up to upstream servers
+                   proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504;
+
+                   # disable redirection & buffering
+                   proxy_redirect    off;
+                   proxy_buffering   off;
+
+                   # set headers
+                   proxy_set_header  Host             $host;
+                   proxy_set_header  X-Real-IP        $remote_addr;
+                   proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
+          }
+       {% endif %}
+}

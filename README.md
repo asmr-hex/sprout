@@ -20,6 +20,12 @@ promote privacy by taking the opportunity to sell personal data away from cloud 
   * tld server
 * show money saver analysis?? lol
 
+### supported LAN network topologies (constellations)
+* home - contains reverse proxy to all satellites, contains certs, contains ddclient
+* satellite - contains reverse proxy to anything here too
+#### types of proxy configurations
+*
+
 ### deliverables
 * cli tool (curses and non-curses)
 * desktop app
@@ -36,6 +42,13 @@ promote privacy by taking the opportunity to sell personal data away from cloud 
 
 ### forseeable challenges
 * handle configuring routers (make http requests simulating a browser...)
+
+### Tests
+#### Ansible
+``` shell
+$ pip install molecule
+$ pip install 'molecule[docker]'
+```
 
 ### Resources
 * [Go Change Gateway with UPnP](https://github.com/NebulousLabs/go-upnp)

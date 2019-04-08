@@ -1,0 +1,37 @@
+---
+all:
+  vars:
+    is_gateway: false
+    gateway_host: jackrabbits-palace.local
+    contact_email: c@polygon.pizza
+  hosts:
+    jackrabbits-palace.local:
+      is_gateway: true
+      endpoints:
+        - domain_name: jackrabbitspal.us
+          static: true
+          static_root: /var/www/jackrabbitspal.us/
+        - domain_name: slime.church
+          aliases:
+            - www.slime.church
+            - deep.slime.church
+          static: false
+          host: slimechurch.local
+          port: 80
+        - domain_name: asmr.slime.church
+          static: false
+          host: slimechurch.local
+          port: 80
+    slimechurch.local:
+      endpoints:
+        - domain_name: slime.church
+          aliases:
+            - www.slime.church
+            - deep.slime.church
+          static: true
+          static_root: /home/c/www/slime.church
+        - domain_name: asmr.slime.church
+          static: false
+          host: localhost
+          port: 3145
+...

@@ -1,0 +1,37 @@
+---
+all:
+  vars:
+    is_gateway: false
+    gateway_host: woofwoof.local
+    contact_email: c@polygon.pizza
+  hosts:
+    woofwoof.local:
+      is_gateway: true
+      endpoints:
+        - domain_name: woofwoof.dog
+          static: true
+          static_root: /var/www/woofwoof.dog/
+        - domain_name: meowmeow.kitty
+          aliases:
+            - www.meowmeow.kitty
+            - deep.meowmeow.kitty
+          static: false
+          host: meowmeow.local
+          port: 80
+        - domain_name: asmr.meowmeow.kitty
+          static: false
+          host: meowmeow.local
+          port: 80
+    meowmeow.local:
+      endpoints:
+        - domain_name: meowmeow.kitty
+          aliases:
+            - www.meowmeow.kitty
+            - deep.meowmeow.kitty
+          static: true
+          static_root: /home/c/www/meowmeow.kitty
+        - domain_name: asmr.meowmeow.kitty
+          static: false
+          host: localhost
+          port: 3145
+...

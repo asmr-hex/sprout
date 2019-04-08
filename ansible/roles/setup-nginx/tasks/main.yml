@@ -1,0 +1,11 @@
+---
+- name: Setup Nginx | Install
+  become: true
+  apt:
+    pkg:
+      - nginx
+      - python-certbot-nginx
+    state: present
+    update_cache: true
+  notify: restart nginx
+...

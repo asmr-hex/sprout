@@ -1,0 +1,22 @@
+---
+# intermediate representation which should be
+# converted to ansible inventory, group_vars, host_vars
+
+jackrabbitspal.us:
+  host: jackrabbits-palace.local
+  static: true
+  static_root: /var/www/jackrabbitspal.us/
+
+slime.church:
+  aliases:
+    - www.slime.church
+    - deep.slime.church
+  host: slimechurch.local
+  static: true
+  static_root: /home/c/www/slime.church/
+
+asmr.slime.church:
+  host: slimechurch.local
+  static: false
+  port: 3145
+...
