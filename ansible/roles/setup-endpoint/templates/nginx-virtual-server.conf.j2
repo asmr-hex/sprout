@@ -10,7 +10,7 @@ server {
 
        # this server block applies to traffic whose 'Host' header
        # matches the server_names below
-       server_name {{ item.domain_name }};
+       server_name {{ item.aliases | default([]) | join(' ') ~ ' ' ~ item.domain_name}};
 
        {% if is_gateway %}
           # configure access and error log locations
